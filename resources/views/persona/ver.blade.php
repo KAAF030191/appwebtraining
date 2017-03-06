@@ -23,6 +23,7 @@
 				<td>{{$item->fechaRegistro}}</td>
 				<td>
 					<input type="button" value="Eliminar" onclick="eliminarPersona({{$item->idPersona}});">
+					<input type="button" value="Editar" onclick="editarPersona({{$item->idPersona}});">
 				</td>
 			</tr>
 		@endforeach
@@ -35,6 +36,11 @@
 		{
 			window.location.href='{{url('persona/eliminar')}}/'+idPersona;
 		}
+	}
+
+	function editarPersona(idPersona)
+	{
+		window.location.href='{{url('persona/editar')}}/'+idPersona;
 	}
 </script>
 @endsection

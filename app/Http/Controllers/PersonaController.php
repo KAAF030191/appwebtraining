@@ -21,8 +21,8 @@ class PersonaController extends Controller
 			$tPersona->correoElectronico=$request->input('txtCorreoElectronico');
 			$tPersona->fechaNacimiento=$request->input('dateFechaNacimiento');
 			$tPersona->estatura=$request->input('txtEstatura');
-			$tPersona->fechaRegistro=date('Y-m-d');
-			$tPersona->fechaModificacion=date('Y-m-d');
+			$tPersona->fechaRegistro=date('Y-m-d H:m:s');
+			$tPersona->fechaModificacion=date('Y-m-d H:m:s');
 
 			$tPersona->save();
 
@@ -56,6 +56,34 @@ class PersonaController extends Controller
 		$tPersona=TPersona::whereRaw('correoElectronico=?', [$correoElectronico])->first();
 
 		return view('persona/verporcorreoelectronico', ['tPersona' => $tPersona]);
+	}
+
+	public function actionEditar(Request $request, $idPersona=null)
+	{
+		if($_POST)
+		{
+			$tPersona=TPersona::find($request->input('hdIdPersona'));
+
+			$tPersona->nombre=$request->input('txtNombre');
+			$tPersona->apellido=$request->input('txtApellido');
+			$tPersona->correoElectronico=$request->input('txtCorreoElectronico');
+			$tPersona->fechaNacimiento=$request->input('dateFechaNacimiento');
+			$tPersona->estatura=$request->input('txtEstatura');
+			$tPersona->fechaModificacion=date('Y-m-d H:m:s');
+
+			$tPersona->save();
+
+			return redirect('/persona/ver');
+		}
+
+		$tPersona=TPersona::find($idPersona);
+
+		if($tPersona==null)
+		{
+			return redirect('/persona/ver');
+		}
+
+		return view('persona/editar', ['tPersona' => $tPersona]);
 	}
 }
 ?>
