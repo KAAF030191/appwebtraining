@@ -14,6 +14,13 @@ class PersonaController extends Controller
 	{
 		if($_POST)
 		{
+			$tPersona=TPersona::whereRaw('correoElectronico=?', [trim($request->input('txtCorreoElectronico'))])->first();
+
+			if($tPersona!=null)
+			{
+				return redirect('/persona/insertar');
+			}
+
 			$tPersona=new TPersona();
 
 			$tPersona->nombre=$request->input('txtNombre');
@@ -62,6 +69,13 @@ class PersonaController extends Controller
 	{
 		if($_POST)
 		{
+			$tPersona=TPersona::whereRaw('idPersona!=? and correoElectronico=?', [$request->input('hdIdPersona'), trim($request->input('txtCorreoElectronico'))])->first();
+
+			if($tPersona!=null)
+			{
+				return redirect('/persona/editar/'.$request->input('hdIdPersona'));
+			}
+
 			$tPersona=TPersona::find($request->input('hdIdPersona'));
 
 			$tPersona->nombre=$request->input('txtNombre');
