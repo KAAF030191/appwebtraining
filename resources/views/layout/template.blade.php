@@ -23,6 +23,9 @@
 					<a href="{{url('persona/ver')}}">Ver personas</a>
 				</li>
 				<li>
+					<a href="{{url('telefono/ver')}}">Ver teléfonos</a>
+				</li>
+				<li>
 					<a href="{{url('index/parametrourl')}}">URL's con parámetros</a>
 				</li>
 			</ul>

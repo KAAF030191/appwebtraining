@@ -41,7 +41,7 @@ class PersonaController extends Controller
 
 	public function actionVer()
 	{
-		$listaTPersona=TPersona::all();
+		$listaTPersona=TPersona::with(['TTelefono.TOperador'])->get();
 
 		return view('persona/ver', ['listaTPersona' => $listaTPersona]);
 	}

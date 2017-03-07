@@ -3,16 +3,16 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TPersona extends Model
+class TOperador extends Model
 {
-	protected $table='tpersona';
-	protected $primaryKey='idPersona';
+	protected $table='toperador';
+	protected $primaryKey='idOperador';
 	public $incrementing=true;
 	public $timestamps=false;
 
 	public function tTelefono()
 	{
-		return $this->hasMany('App\Model\TTelefono', 'idPersona');
+		return $this->hasMany('App\Model\TTelefono', 'idOperador');
 	}
 }
 ?>

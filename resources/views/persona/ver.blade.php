@@ -8,6 +8,7 @@
 			<th>Correo electrónico</th>
 			<th>Fecha de nacimiento</th>
 			<th>Estatura</th>
+			<th>Teléfonos</th>
 			<th>Fecha de registro</th>
 			<th></th>
 		</tr>
@@ -20,6 +21,13 @@
 				<td>{{$item->correoElectronico}}</td>
 				<td>{{$item->fechaNacimiento}}</td>
 				<td>{{$item->estatura}}</td>
+				<td>
+					<ul>
+						@foreach($item->tTelefono as $value)
+							<li>{{$value->numero}} ({{$value->tOperador->nombre}})</li>
+						@endforeach
+					</ul>
+				</td>
 				<td>{{$item->fechaRegistro}}</td>
 				<td>
 					<input type="button" value="Eliminar" onclick="eliminarPersona({{$item->idPersona}});">
