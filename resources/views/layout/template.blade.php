@@ -32,6 +32,13 @@
 		</nav>
 	</header>
 	<section id="sectionCuerpoGeneral">
+		<div id="divMensajeGeneral"></div>
+		@if(Session::has('mensajeGeneral'))
+			<script>
+				$('#divMensajeGeneral').html('{{Session::get('mensajeGeneral')}}');
+				$('#divMensajeGeneral').css({'background-color' : '{{Session::get('color')}}'});
+			</script>
+		@endif
 		@yield('cuerpoInterno')
 	</section>
 	<footer>

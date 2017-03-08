@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Session\SessionManager;
 
 use DB;
 
@@ -10,7 +11,7 @@ use App\Model\TPersona;
 
 class PersonaController extends Controller
 {
-	public function actionInsertar(Request $request)
+	public function actionInsertar(Request $request, SessionManager $sessionManager)
 	{
 		if($_POST)
 		{
@@ -18,6 +19,9 @@ class PersonaController extends Controller
 
 			if($tPersona!=null)
 			{
+				$sessionManager->flash('mensajeGeneral', 'El correo electrónico ya existe.');
+				$sessionManager->flash('color', env('COLOR_ERROR'));
+
 				return redirect('/persona/insertar');
 			}
 
@@ -32,6 +36,9 @@ class PersonaController extends Controller
 			$tPersona->fechaModificacion=date('Y-m-d H:m:s');
 
 			$tPersona->save();
+
+			$sessionManager->flash('mensajeGeneral', 'Persona registrada correctamente.');
+			$sessionManager->flash('color', env('COLOR_CORRECTO'));
 
 			return redirect('/persona/insertar');
 		}
