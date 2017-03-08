@@ -26,7 +26,7 @@
 					<a href="{{url('telefono/ver')}}">Ver teléfonos</a>
 				</li>
 				<li>
-					<a href="{{url('index/parametrourl')}}">URL's con parámetros</a>
+					<a href="{{url('index/parametrourl')}}">URLs con parámetros</a>
 				</li>
 			</ul>
 		</nav>
