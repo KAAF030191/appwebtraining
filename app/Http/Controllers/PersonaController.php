@@ -106,5 +106,33 @@ class PersonaController extends Controller
 
 		return view('persona/editar', ['tPersona' => $tPersona]);
 	}
+
+	public function actionLogIn(Request $request, SessionManager $sessionManager)
+	{
+		$tPersona=TPersona::whereRaw('correoElectronico=?', [$request->input('txtCorreoElectronicoLogIn')])->first();
+
+		if($tPersona==null)
+		{
+			$sessionManager->flash('mensajeGeneral', 'Datos incorrectos.');
+			$sessionManager->flash('color', env('COLOR_ERROR'));
+
+			return redirect('/');
+		}
+
+		$sessionManager->put('idPersona', $tPersona->idPersona);
+		$sessionManager->put('correoElectronico', $tPersona->correoElectronico);
+
+		$sessionManager->flash('mensajeGeneral', 'Bienvenido(a).');
+		$sessionManager->flash('color', env('COLOR_CORRECTO'));
+
+		return redirect('/');
+	}
+
+	public function actionLogOut(SessionManager $sessionManager)
+	{
+		$sessionManager->flush();
+
+		return redirect('/');
+	}
 }
 ?>

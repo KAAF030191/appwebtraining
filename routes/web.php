@@ -10,6 +10,8 @@ Route::get('/persona/eliminar/{idPersona}', 'PersonaController@actionEliminar');
 Route::get('/persona/verporcorreoelectronico/{correoElectronico}', 'PersonaController@actionVerPorCorreoElectronico');
 Route::get('/persona/editar/{idPersona}', 'PersonaController@actionEditar');
 Route::post('/persona/editar', 'PersonaController@actionEditar');
+Route::post('/persona/login', 'PersonaController@actionLogIn');
+Route::get('/persona/logout', 'PersonaController@actionLogOut');
 
 /*Rutas teléfono*/
 Route::get('/telefono/ver', 'TelefonoController@actionVer');

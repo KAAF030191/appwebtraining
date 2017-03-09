@@ -30,6 +30,14 @@
 				</li>
 			</ul>
 		</nav>
+		<div style="color: #ffffff;position: absolute;right: 10px;top: 25px;">
+			@if(Session::has('idPersona'))
+				{{Session::get('correoElectronico')}}
+				<a href="{{url('persona/logout')}}" style="color: #ffffff;">Cerrar sesión</a>
+			@else
+				<span>Anónimo</span>
+			@endif
+		</div>
 	</header>
 	<section id="sectionCuerpoGeneral">
 		<div id="divMensajeGeneral"></div>
