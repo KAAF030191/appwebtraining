@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager;
+use Illuminate\Encryption\Encrypter;
 
 use DB;
+use Mail;
 
 use App\Model\TPersona;
 
 class PersonaController extends Controller
 {
-	public function actionInsertar(Request $request, SessionManager $sessionManager)
+	public function actionInsertar(Request $request, SessionManager $sessionManager, Encrypter $encrypter)
 	{
 		if($_POST)
 		{
@@ -30,6 +32,7 @@ class PersonaController extends Controller
 			$tPersona->nombre=$request->input('txtNombre');
 			$tPersona->apellido=$request->input('txtApellido');
 			$tPersona->correoElectronico=$request->input('txtCorreoElectronico');
+			$tPersona->contrasenia=$encrypter->encrypt($request->input('passContrasenia'));
 			$tPersona->fechaNacimiento=$request->input('dateFechaNacimiento');
 			$tPersona->estatura=$request->input('txtEstatura');
 			$tPersona->fechaRegistro=date('Y-m-d H:m:s');
@@ -107,7 +110,7 @@ class PersonaController extends Controller
 		return view('persona/editar', ['tPersona' => $tPersona]);
 	}
 
-	public function actionLogIn(Request $request, SessionManager $sessionManager)
+	public function actionLogIn(Request $request, SessionManager $sessionManager, Encrypter $encrypter)
 	{
 		$tPersona=TPersona::whereRaw('correoElectronico=?', [$request->input('txtCorreoElectronicoLogIn')])->first();
 
@@ -119,8 +122,22 @@ class PersonaController extends Controller
 			return redirect('/');
 		}
 
+		if($encrypter->decrypt($tPersona->contrasenia)!=$request->input('passContraseniaLogIn'))
+		{
+			$sessionManager->flash('mensajeGeneral', 'Datos incorrectos.');
+			$sessionManager->flash('color', env('COLOR_ERROR'));
+
+			return redirect('/');
+		}
+
 		$sessionManager->put('idPersona', $tPersona->idPersona);
 		$sessionManager->put('correoElectronico', $tPersona->correoElectronico);
+
+		Mail::send('mail.avisologin', ['fechaActual' => date('Y-m-d H:m:s')], function($x)
+		{
+			$x->from('kaaf030191@gmail.com', 'codideep.com');
+			$x->to('kaaf030191@gmail.com', 'Kevin Arnold Arias Figueroa')->subject('Mensaje de prueba');
+		});
 
 		$sessionManager->flash('mensajeGeneral', 'Bienvenido(a).');
 		$sessionManager->flash('color', env('COLOR_CORRECTO'));

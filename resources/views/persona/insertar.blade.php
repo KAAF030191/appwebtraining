@@ -10,6 +10,9 @@
 	<label for="txtCorreoElectronico">Correo</label>
 	<input type="text" id="txtCorreoElectronico" name="txtCorreoElectronico">
 	<br>
+	<label for="passContrasenia">Contraseña</label>
+	<input type="password" id="passContrasenia" name="passContrasenia">
+	<br>
 	<label for="dateFechaNacimiento">Fecha de nacimiento</label>
 	<input type="date" id="dateFechaNacimiento" name="dateFechaNacimiento">
 	<br>
