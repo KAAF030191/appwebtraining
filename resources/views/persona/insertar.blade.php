@@ -1,6 +1,6 @@
 @extends('layout.template')
 @section('cuerpoInterno')
-<form id="frmInsertarPersona" action="{{url('persona/insertar')}}" method="post">
+<form id="frmInsertarPersona" action="{{url('persona/insertar')}}" method="post" enctype="multipart/form-data">
 	<label for="txtNombre">Nombre</label>
 	<input type="text" id="txtNombre" name="txtNombre">
 	<br>
@@ -12,6 +12,9 @@
 	<br>
 	<label for="passContrasenia">Contraseña</label>
 	<input type="password" id="passContrasenia" name="passContrasenia">
+	<br>
+	<label for="fileAvatar">Avatar</label>
+	<input type="file" id="fileAvatar" name="fileAvatar">
 	<br>
 	<label for="dateFechaNacimiento">Fecha de nacimiento</label>
 	<input type="date" id="dateFechaNacimiento" name="dateFechaNacimiento">

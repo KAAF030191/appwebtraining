@@ -17,31 +17,59 @@ class PersonaController extends Controller
 	{
 		if($_POST)
 		{
-			$tPersona=TPersona::whereRaw('correoElectronico=?', [trim($request->input('txtCorreoElectronico'))])->first();
-
-			if($tPersona!=null)
+			try
 			{
-				$sessionManager->flash('mensajeGeneral', 'El correo electrónico ya existe.');
-				$sessionManager->flash('color', env('COLOR_ERROR'));
+				DB::beginTransaction();
 
-				return redirect('/persona/insertar');
+				$tPersona=TPersona::whereRaw('correoElectronico=?', [trim($request->input('txtCorreoElectronico'))])->first();
+
+				if($tPersona!=null)
+				{
+					$sessionManager->flash('mensajeGeneral', 'El correo electrónico ya existe.');
+					$sessionManager->flash('color', env('COLOR_ERROR'));
+
+					return redirect('/persona/insertar');
+				}
+
+				$tPersona=new TPersona();
+
+				$tPersona->nombre=$request->input('txtNombre');
+				$tPersona->apellido=$request->input('txtApellido');
+				$tPersona->correoElectronico=$request->input('txtCorreoElectronico');
+				$tPersona->contrasenia=$encrypter->encrypt($request->input('passContrasenia'));
+				$tPersona->extensionAvatar='';
+				$tPersona->fechaNacimiento=$request->input('dateFechaNacimiento');
+				$tPersona->estatura=$request->input('txtEstatura');
+				$tPersona->fechaRegistro=date('Y-m-d H:m:s');
+				$tPersona->fechaModificacion=date('Y-m-d H:m:s');
+
+				$tPersona->save();
+
+				$tPersonaTemp=TPersona::whereRaw('idPersona=(select max(idPersona) from tpersona)')->first();
+
+				if($request->hasFile('fileAvatar'))
+				{
+					$fileGetClientOriginalExtension=strtolower($request->file('fileAvatar')->getClientOriginalExtension());
+
+					$tPersonaTemp->extensionAvatar=$fileGetClientOriginalExtension;
+
+					$tPersonaTemp->save();
+
+					$request->file('fileAvatar')->move(public_path().'/img/avatar', $tPersonaTemp->idPersona.'.'.$fileGetClientOriginalExtension);
+				}
+
+				DB::commit();
+
+				$sessionManager->flash('mensajeGeneral', 'Persona registrada correctamente.');
+				$sessionManager->flash('color', env('COLOR_CORRECTO'));
 			}
+			catch(\Exception $ex)
+			{
+				DB::rollback();
 
-			$tPersona=new TPersona();
-
-			$tPersona->nombre=$request->input('txtNombre');
-			$tPersona->apellido=$request->input('txtApellido');
-			$tPersona->correoElectronico=$request->input('txtCorreoElectronico');
-			$tPersona->contrasenia=$encrypter->encrypt($request->input('passContrasenia'));
-			$tPersona->fechaNacimiento=$request->input('dateFechaNacimiento');
-			$tPersona->estatura=$request->input('txtEstatura');
-			$tPersona->fechaRegistro=date('Y-m-d H:m:s');
-			$tPersona->fechaModificacion=date('Y-m-d H:m:s');
-
-			$tPersona->save();
-
-			$sessionManager->flash('mensajeGeneral', 'Persona registrada correctamente.');
-			$sessionManager->flash('color', env('COLOR_CORRECTO'));
+				$sessionManager->flash('mensajeGeneral', 'Error no controlado.');
+				$sessionManager->flash('color', env('COLOR_ERROR'));
+			}
 
 			return redirect('/persona/insertar');
 		}
@@ -132,12 +160,14 @@ class PersonaController extends Controller
 
 		$sessionManager->put('idPersona', $tPersona->idPersona);
 		$sessionManager->put('correoElectronico', $tPersona->correoElectronico);
+		$sessionManager->put('nombre', $tPersona->nombre);
+		$sessionManager->put('extensionAvatar', $tPersona->extensionAvatar);
 
-		Mail::send('mail.avisologin', ['fechaActual' => date('Y-m-d H:m:s')], function($x)
+		/*Mail::send('mail.avisologin', ['fechaActual' => date('Y-m-d H:m:s')], function($x)
 		{
 			$x->from('kaaf030191@gmail.com', 'codideep.com');
 			$x->to('kaaf030191@gmail.com', 'Kevin Arnold Arias Figueroa')->subject('Mensaje de prueba');
-		});
+		});*/
 
 		$sessionManager->flash('mensajeGeneral', 'Bienvenido(a).');
 		$sessionManager->flash('color', env('COLOR_CORRECTO'));

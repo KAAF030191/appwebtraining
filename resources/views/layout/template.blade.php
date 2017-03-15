@@ -32,7 +32,8 @@
 		</nav>
 		<div style="color: #ffffff;position: absolute;right: 10px;top: 25px;">
 			@if(Session::has('idPersona'))
-				{{Session::get('correoElectronico')}}
+				<img src="{{asset('img/avatar').'/'.Session::get('idPersona').'.'.Session::get('extensionAvatar')}}" width="30px" height="30px" style="display: inline-block;vertical-align: middle;">
+				<span style="vertical-align: middle;">{{Session::get('nombre')}}</span>
 				<a href="{{url('persona/logout')}}" style="color: #ffffff;">Cerrar sesión</a>
 			@else
 				<span>Anónimo</span>
