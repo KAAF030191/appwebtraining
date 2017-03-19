@@ -28,6 +28,12 @@
 				<li>
 					<a href="{{url('index/parametrourl')}}">URLs con parámetros</a>
 				</li>
+				<li>
+					<a href="{{url('index/subirarchivo')}}">Subir archivo</a>
+				</li>
+				<li>
+					<a href="{{url('index/descargararchivo')}}">Descargar archivo</a>
+				</li>
 			</ul>
 		</nav>
 		<div style="color: #ffffff;position: absolute;right: 10px;top: 25px;">

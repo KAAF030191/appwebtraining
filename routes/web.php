@@ -2,6 +2,8 @@
 Route::get('/', 'IndexController@actionIndex');
 Route::post('/index/index', 'IndexController@actionIndex');
 Route::get('/index/parametrourl/{codigoEstudiante?}', 'IndexController@actionParametroUrl');
+Route::match(['get', 'post'], '/index/subirarchivo', 'IndexController@actionSubirArchivo');
+Route::get('/index/descargararchivo', 'IndexController@actionDescargarArchivo');
 
 /*Rutas persona*/
 Route::match(['get', 'post'], '/persona/insertar', 'PersonaController@actionInsertar');
