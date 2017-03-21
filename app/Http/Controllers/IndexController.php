@@ -48,6 +48,13 @@ class IndexController extends Controller
 
 		return response()->download($file_path);
 	}
+
+	public function actionObtenerHoraConAjax()
+	{
+		$horaActual=date('H:m:s');
+
+		return ['horaActual' => $horaActual];
+	}
 }
 
 ?>

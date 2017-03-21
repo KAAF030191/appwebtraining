@@ -181,5 +181,12 @@ class PersonaController extends Controller
 
 		return redirect('/');
 	}
+
+	public function actionListarPersonasConAjax()
+	{
+		$listaTPersona=TPersona::all();
+
+		return view('persona/listarpersonasconajax', ['listaTPersona' => $listaTPersona]);
+	}
 }
 ?>

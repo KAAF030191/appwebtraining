@@ -20,4 +20,38 @@
 	{{csrf_field()}}
 	<input type="submit" value="Acceder">
 </form>
+<br>
+<input type="button" id="btnVerListaUsuarios" name="btnVerListaUsuarios" value="Ver lista de usuarios" onclick="listarPersonasConAjax();">
+<div id="divListaPersonas"></div>
+<input type="button" id="btnObtenerHoraConAjax" name="btnObtenerHoraConAjax" value="Obtener hora del servidor" onclick="obtenerHoraConAjax();">
+<span id="spanHoraActual"></span>
+<script>
+	function listarPersonasConAjax()
+	{
+		$.ajax(
+		{
+			method: 'POST',
+			url: '{{url('persona/listarpersonasconajax')}}',
+			data: {_token : '{{csrf_token()}}'}
+		})
+		.done(function(result)
+		{
+			$('#divListaPersonas').html(result);
+		});
+	}
+
+	function obtenerHoraConAjax()
+	{
+		$.ajax(
+		{
+			method: 'POST',
+			url: '{{url('index/obtenerhoraconajax')}}',
+			data: {_token : '{{csrf_token()}}'}
+		})
+		.done(function(result)
+		{
+			$('#spanHoraActual').text(result.horaActual);
+		});
+	}
+</script>
 @endsection
