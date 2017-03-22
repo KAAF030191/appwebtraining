@@ -34,6 +34,9 @@
 				<li>
 					<a href="{{url('index/descargararchivo')}}">Descargar archivo</a>
 				</li>
+				<li>
+					<a href="{{url('index/exportpdf')}}" target="_blank">Ver PDF</a>
+				</li>
 			</ul>
 		</nav>
 		<div style="color: #ffffff;position: absolute;right: 10px;top: 25px;">

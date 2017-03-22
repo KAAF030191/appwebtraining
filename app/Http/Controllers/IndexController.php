@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Filesystem\Factory as FileSystem;
+use Illuminate\Contracts\Routing\ResponseFactory as Response;
 
 class IndexController extends Controller
 {
@@ -54,6 +55,24 @@ class IndexController extends Controller
 		$horaActual=date('H:m:s');
 
 		return ['horaActual' => $horaActual];
+	}
+
+	public function actionExportPdf(Response $response)
+	{
+		$pdf=app('FPDF');
+
+		$pdf->AddPage();
+		$pdf->SetFont('Arial', 'B', 16);
+		$pdf->Cell(40, 10, 'Hello World!');
+		$pdf->Cell(40, 10, 'Other!');
+		$pdf->Cell(40, 10, 'Any more!');
+		$pdf->Ln();
+		$pdf->Cell(40, 10, 'Kevin Arnold');
+
+		
+		$headers=['Content-Type' => 'application/pdf'];
+
+		return $response->make($pdf->Output('I'), 200, $headers);
 	}
 }
 
