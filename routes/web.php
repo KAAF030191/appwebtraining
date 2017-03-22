@@ -7,6 +7,40 @@ Route::get('/index/descargararchivo', 'IndexController@actionDescargarArchivo');
 Route::post('/index/obtenerhoraconajax', 'IndexController@actionObtenerHoraConAjax');
 Route::get('/index/exportpdf', 'IndexController@actionExportPdf');
 
+Route::get('/index/exportexcel', function()
+{
+	$nombreTemporal='Texto cualquiera';
+
+	Excel::create('Laravel Excel', function($excel) use($nombreTemporal)
+	{
+	    $excel->sheet('Excel sheet', function($sheet) use($nombreTemporal)
+	    {
+	        $sheet->setOrientation('landscape');
+
+	        $sheet->cell('C4', function($cell)
+	        {
+			    $cell->setValue('codideep.com');
+			});
+
+			$sheet->cell('C5', function($cell) use($nombreTemporal)
+	        {
+			    $cell->setValue($nombreTemporal);
+			});
+
+			$sheet->fromArray([1, 2, 3, 4, 5, 6, 7], null, 'A1', true);
+
+			$sheet->mergeCells('H2:J4');
+
+			$sheet->cell('H2', function($cell)
+	        {
+			    $cell->setValue('Clases de desarrollo');
+			    $cell->setAlignment('center');
+			    $cell->setValignment('center');
+			});
+	    });
+	})->export('xls');
+});
+
 /*Rutas persona*/
 Route::match(['get', 'post'], '/persona/insertar', 'PersonaController@actionInsertar');
 Route::get('/persona/ver', 'PersonaController@actionVer');
